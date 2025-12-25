@@ -1,46 +1,127 @@
-# Getting Started with Create React App
+# 生产问题诊断平台 (Production Issue Diagnosis Platform)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个基于React和TypeScript的前端应用，通过结合生产单据信息、代码分析和AI模型，帮助运维人员快速诊断生产环境问题。
 
-## Available Scripts
+## 功能特性
 
-In the project directory, you can run:
+- 📁 **代码上传与管理**: 支持文件夹拖拽上传和Git仓库集成
+- 🔍 **智能代码分析**: 多语言代码解析和结构分析
+- 📋 **生产单据管理**: 结构化的问题单据输入和管理
+- 🤖 **AI驱动诊断**: 集成AI模型进行智能问题诊断
+- 🔒 **数据安全**: 本地数据处理，支持数据脱敏
+- 📱 **响应式设计**: 支持多设备访问
 
-### `npm start`
+## 技术栈
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **前端框架**: React 19 + TypeScript
+- **状态管理**: Redux Toolkit
+- **路由**: React Router v6
+- **样式**: CSS3 + 响应式设计
+- **测试**: Jest + React Testing Library
+- **代码规范**: ESLint + Prettier
+- **构建工具**: Create React App
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 开发环境设置
 
-### `npm test`
+### 前置要求
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js >= 16.0.0
+- npm >= 8.0.0
 
-### `npm run build`
+### 安装依赖
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+\`\`\`bash
+npm install
+\`\`\`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 开发命令
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+\`\`\`bash
+# 启动开发服务器
+npm start
 
-### `npm run eject`
+# 运行测试
+npm test
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# 构建生产版本
+npm run build
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# 代码检查
+npm run lint
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# 代码格式化
+npm run format
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# 检查代码格式
+npm run format:check
+\`\`\`
 
-## Learn More
+## 项目结构
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+\`\`\`
+src/
+├── components/          # React组件
+├── hooks/              # 自定义Hooks
+├── pages/              # 页面组件
+├── services/           # 业务逻辑服务
+├── store/              # Redux状态管理
+├── types/              # TypeScript类型定义
+├── utils/              # 工具函数
+├── App.tsx             # 主应用组件
+└── index.tsx           # 应用入口
+\`\`\`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 开发规范
+
+### 代码风格
+
+- 使用TypeScript进行类型安全开发
+- 遵循ESLint规则
+- 使用Prettier进行代码格式化
+- 组件使用函数式组件 + Hooks
+
+### Git提交规范
+
+项目配置了Husky pre-commit钩子，会在提交前自动运行：
+- ESLint代码检查
+- Prettier代码格式化
+
+### 测试规范
+
+- 为所有组件编写单元测试
+- 使用React Testing Library进行组件测试
+- 保持测试覆盖率
+
+## 部署
+
+### 构建生产版本
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+构建完成后，\`build\` 目录包含了可部署的静态文件。
+
+### 部署到静态服务器
+
+\`\`\`bash
+# 使用serve进行本地预览
+npm install -g serve
+serve -s build
+\`\`\`
+
+## 贡献指南
+
+1. Fork 项目
+2. 创建功能分支 (\`git checkout -b feature/AmazingFeature\`)
+3. 提交更改 (\`git commit -m 'Add some AmazingFeature'\`)
+4. 推送到分支 (\`git push origin feature/AmazingFeature\`)
+5. 创建 Pull Request
+
+## 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 联系方式
+
+如有问题或建议，请创建 Issue 或联系开发团队。

@@ -1,0 +1,340 @@
+.performance-monitor__toggle {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 3rem;
+  height: 3rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.performance-monitor__toggle:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+.performance-monitor {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 400px;
+  max-height: 80vh;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.performance-monitor--mobile {
+  width: calc(100vw - 2rem);
+  max-width: 400px;
+}
+
+.performance-monitor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.performance-monitor__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.performance-monitor__controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.performance-monitor__control {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.performance-monitor__control:hover {
+  color: #374151;
+  background-color: #e5e7eb;
+}
+
+.performance-monitor__summary {
+  padding: 1rem;
+}
+
+.performance-monitor__metric {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.performance-monitor__metric-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  min-width: 60px;
+}
+
+.performance-monitor__memory-bar {
+  flex: 1;
+  height: 8px;
+  background-color: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.performance-monitor__memory-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.performance-monitor__metric-value {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  min-width: 80px;
+  text-align: right;
+}
+
+.performance-monitor__details {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1rem 1rem;
+}
+
+.performance-monitor__section {
+  margin-bottom: 1.5rem;
+}
+
+.performance-monitor__section:last-child {
+  margin-bottom: 0;
+}
+
+.performance-monitor__section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.performance-monitor__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.performance-monitor__no-data {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.performance-monitor__metric-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+.performance-monitor__metric-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.performance-monitor__metric-stats {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.performance-monitor__metric-stats span {
+  white-space: nowrap;
+}
+
+.performance-monitor__capabilities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.performance-monitor__capability {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.performance-monitor__capability span:first-child {
+  color: #374151;
+  font-weight: 500;
+}
+
+.performance-monitor__capability .supported {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.performance-monitor__capability .not-supported {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.performance-monitor__memory-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.performance-monitor__memory-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.performance-monitor__memory-stat span:first-child {
+  color: #374151;
+  font-weight: 500;
+}
+
+.performance-monitor__memory-stat span:last-child {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .performance-monitor {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .performance-monitor__header {
+    background-color: #374151;
+    border-bottom-color: #4b5563;
+  }
+  
+  .performance-monitor__title {
+    color: #f9fafb;
+  }
+  
+  .performance-monitor__control {
+    color: #d1d5db;
+  }
+  
+  .performance-monitor__control:hover {
+    color: #f3f4f6;
+    background-color: #4b5563;
+  }
+  
+  .performance-monitor__metric-label {
+    color: #f3f4f6;
+  }
+  
+  .performance-monitor__memory-bar {
+    background-color: #374151;
+  }
+  
+  .performance-monitor__metric-value {
+    color: #d1d5db;
+  }
+  
+  .performance-monitor__section-title {
+    color: #f9fafb;
+    border-bottom-color: #374151;
+  }
+  
+  .performance-monitor__no-data {
+    color: #6b7280;
+  }
+  
+  .performance-monitor__metric-row,
+  .performance-monitor__capability,
+  .performance-monitor__memory-stat {
+    background-color: #374151;
+  }
+  
+  .performance-monitor__metric-name,
+  .performance-monitor__capability span:first-child,
+  .performance-monitor__memory-stat span:first-child {
+    color: #f3f4f6;
+  }
+  
+  .performance-monitor__metric-stats,
+  .performance-monitor__memory-stat span:last-child {
+    color: #d1d5db;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .performance-monitor__toggle,
+  .performance-monitor__control,
+  .performance-monitor__memory-fill {
+    transition: none;
+  }
+  
+  .performance-monitor__toggle:hover {
+    transform: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .performance-monitor__toggle {
+    bottom: 5rem; /* Above progress panel */
+  }
+  
+  .performance-monitor {
+    bottom: 5rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+  }
+  
+  .performance-monitor__metric-stats {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}

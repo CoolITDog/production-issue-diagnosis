@@ -1,0 +1,242 @@
+.git-integration-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.git-integration-form {
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.git-integration-form h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.git-integration-form h3::before {
+  content: '🔗';
+  font-size: 24px;
+}
+
+.git-url-input {
+  margin-bottom: 20px;
+}
+
+.git-url-input label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.git-url-input input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.git-url-input input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.git-url-input input.error {
+  border-color: #dc3545;
+}
+
+.git-url-input input:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.input-error {
+  margin-top: 4px;
+  color: #dc3545;
+  font-size: 12px;
+}
+
+.git-credentials-section {
+  margin-bottom: 20px;
+}
+
+.credentials-toggle {
+  padding: 8px 16px;
+  border: 1px solid #6c757d;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.credentials-toggle:hover:not(:disabled) {
+  background-color: #e9ecef;
+  border-color: #5a6268;
+}
+
+.credentials-toggle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.credentials-form {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+}
+
+.credential-input {
+  margin-bottom: 12px;
+}
+
+.credential-input:last-of-type {
+  margin-bottom: 0;
+}
+
+.credential-input label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+}
+
+.credential-input input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.credential-input input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.credential-input input:disabled {
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
+.credentials-note {
+  margin-top: 12px;
+  padding: 8px;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+}
+
+.credentials-note p {
+  margin: 0;
+  font-size: 12px;
+  color: #1976d2;
+}
+
+.git-actions {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.clone-btn {
+  padding: 12px 24px;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clone-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.clone-btn:disabled {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.git-help {
+  padding: 16px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+}
+
+.git-help-text p {
+  margin: 0 0 8px 0;
+  font-size: 13px;
+  color: #856404;
+}
+
+.git-help-text p:last-child {
+  margin-bottom: 0;
+}
+
+.git-help-text ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.git-help-text li {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #856404;
+}
+
+.git-help-text strong {
+  color: #533f03;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .git-integration-form {
+    padding: 16px;
+  }
+  
+  .git-integration-form h3 {
+    font-size: 18px;
+  }
+  
+  .clone-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
