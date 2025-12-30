@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MainLayout } from '../components/Layout';
 import { FileUploadInterface } from '../components/FileUploadInterface';
 import { GitIntegration } from '../components/GitIntegration';
@@ -8,15 +9,44 @@ import './ProjectPage.css';
 export const ProjectPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'upload' | 'git' | 'list'>('upload');
   const [projects, setProjects] = useState<CodeProject[]>([]);
+  const navigate = useNavigate();
+
+  // Load existing projects from localStorage on component mount
+  useEffect(() => {
+    const existingProjects = JSON.parse(localStorage.getItem('uploadedProjects') || '[]');
+    setProjects(existingProjects);
+  }, []);
 
   const handleProjectUploaded = (project: CodeProject) => {
     setProjects(prev => [...prev, project]);
+    
+    // Store the project in localStorage for persistence
+    const existingProjects = JSON.parse(localStorage.getItem('uploadedProjects') || '[]');
+    const updatedProjects = [...existingProjects, project];
+    localStorage.setItem('uploadedProjects', JSON.stringify(updatedProjects));
+    
     setActiveTab('list');
   };
 
   const handleUploadError = (error: string) => {
     console.error('Upload error:', error);
     // TODO: Show error notification
+  };
+
+  const handleViewDetails = (project: CodeProject) => {
+    // 存储项目数据到localStorage或状态管理中
+    localStorage.setItem('currentProject', JSON.stringify(project));
+    // 导航到项目详情页面（可以是一个新页面或模态框）
+    console.log('查看项目详情:', project);
+    // 暂时显示项目信息的alert
+    alert(`项目详情:\n名称: ${project.name}\n文件数: ${project.files.length}\n语言: ${project.languages.join(', ')}\n大小: ${(project.totalSize / 1024 / 1024).toFixed(2)} MB`);
+  };
+
+  const handleStartDiagnosis = (project: CodeProject) => {
+    // 存储项目数据
+    localStorage.setItem('currentProject', JSON.stringify(project));
+    // 导航到诊断页面
+    navigate('/diagnosis');
   };
 
   const sidebar = (
@@ -134,10 +164,16 @@ export const ProjectPage: React.FC = () => {
                     </div>
                     
                     <div className="project-actions">
-                      <button className="project-action-btn primary">
+                      <button 
+                        className="project-action-btn primary"
+                        onClick={() => handleViewDetails(project)}
+                      >
                         查看详情
                       </button>
-                      <button className="project-action-btn secondary">
+                      <button 
+                        className="project-action-btn secondary"
+                        onClick={() => handleStartDiagnosis(project)}
+                      >
                         开始诊断
                       </button>
                     </div>

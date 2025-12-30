@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { FileUploadManager } from '../services/FileUploadManager';
 import { CodeProject, ValidationResult } from '../types';
-import { formatFileSize, detectLanguageFromExtension, generateId } from '../utils';
+import { detectLanguageFromExtension, generateId } from '../utils';
 import { FileChunker, memoryMonitor, performanceMetrics } from '../utils/performance';
 import './FileUpload.css';
 
@@ -153,13 +153,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 
   // New function to process files with progress updates and memory management
   const processFilesWithProgress = async (files: File[]): Promise<CodeProject> => {
-    // Filter code files using the public method or utility function
-    const codeFiles = files.filter(file => {
-      const extension = file.name.split('.').pop()?.toLowerCase();
-      return extension ? 
-        fileUploadManager['SUPPORTED_EXTENSIONS'].includes(extension) : 
-        false;
-    });
+    // Filter code files using the FileUploadManager's filterCodeFiles method
+    const codeFiles = await fileUploadManager.filterCodeFiles(files);
     
     if (codeFiles.length === 0) {
       throw new Error('No supported code files found in the uploaded folder');
@@ -184,7 +179,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
         if (file.size > 1024 * 1024) {
           await fileChunker.current.processLargeFile(
             file,
-            async (chunk, isLast) => {
+            async (chunk) => {
               content += chunk;
             },
             () => {} // Progress is updated per file, not per chunk

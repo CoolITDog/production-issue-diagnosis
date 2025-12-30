@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MainLayout } from '../components/Layout';
 import { TicketForm, TicketList, TicketDetail } from '../components/TicketManagement';
 import { ProductionTicket } from '../types';
@@ -14,6 +15,7 @@ export const TicketsPage: React.FC = () => {
   const [editingTicket, setEditingTicket] = useState<ProductionTicket | null>(null);
 
   const ticketManager = new TicketManager();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadTickets();
@@ -78,8 +80,18 @@ export const TicketsPage: React.FC = () => {
   };
 
   const handleStartDiagnosis = (ticket: ProductionTicket) => {
-    // TODO: Navigate to diagnosis page with ticket
-    console.log('Starting diagnosis for ticket:', ticket.id);
+    try {
+      // 将选中的单据存储到localStorage，供诊断页面使用
+      localStorage.setItem('selectedTicket', JSON.stringify(ticket));
+      
+      // 导航到诊断页面
+      navigate('/diagnosis');
+      
+      console.log('Starting diagnosis for ticket:', ticket.id);
+    } catch (error) {
+      console.error('Failed to start diagnosis:', error);
+      alert('启动诊断失败，请重试');
+    }
   };
 
   const handleCancel = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MainLayout } from '../components/Layout';
 import { DiagnosisProgress, DiagnosisResult } from '../components/DiagnosisResults';
 import { ProductionTicket, CodeProject, DiagnosisResult as DiagnosisResultType } from '../types';
@@ -22,6 +22,48 @@ export const DiagnosisPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<string>('');
   const [overallProgress, setOverallProgress] = useState<number>(0);
   const [diagnosisResult, setDiagnosisResult] = useState<DiagnosisResultType | null>(null);
+
+  // 安全的日期格式化函数
+  const formatDate = (date: Date | string | undefined): string => {
+    if (!date) return '未知时间';
+    try {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      if (isNaN(dateObj.getTime())) return '无效日期';
+      return dateObj.toLocaleDateString('zh-CN');
+    } catch (error) {
+      return '日期格式错误';
+    }
+  };
+
+  // 从localStorage加载当前项目和选中的单据
+  React.useEffect(() => {
+    // 加载当前项目
+    const currentProjectData = localStorage.getItem('currentProject');
+    if (currentProjectData) {
+      try {
+        const project = JSON.parse(currentProjectData);
+        setSelectedProject(project);
+      } catch (error) {
+        console.error('Failed to parse current project data:', error);
+      }
+    }
+
+    // 加载选中的单据
+    const selectedTicketData = localStorage.getItem('selectedTicket');
+    if (selectedTicketData) {
+      try {
+        const ticket = JSON.parse(selectedTicketData);
+        // 确保timestamp是Date对象
+        if (ticket.timestamp && typeof ticket.timestamp === 'string') {
+          ticket.timestamp = new Date(ticket.timestamp);
+        }
+        setSelectedTicket(ticket);
+        console.log('Loaded selected ticket:', ticket);
+      } catch (error) {
+        console.error('Failed to parse selected ticket data:', error);
+      }
+    }
+  }, []);
 
   const [steps] = useState<DiagnosisStep[]>([
     {
@@ -57,54 +99,104 @@ export const DiagnosisPage: React.FC = () => {
   ]);
 
   // Mock data for demonstration
-  const mockTickets: ProductionTicket[] = [
-    {
-      id: '1',
-      title: '用户登录失败问题',
-      description: '用户在登录时遇到认证失败，返回500错误',
-      severity: 'high',
-      status: 'draft',
-      inputData: { username: 'test@example.com', password: '***' },
-      outputData: { error: 'Authentication failed', code: 500 },
-      errorLogs: ['Error: Invalid credentials', 'Stack trace: ...'],
-      timestamp: new Date('2024-01-15T10:30:00'),
-    },
-    {
-      id: '2',
-      title: '数据库连接超时',
-      description: '应用程序无法连接到数据库，出现超时错误',
-      severity: 'critical',
-      status: 'draft',
-      inputData: { query: 'SELECT * FROM users' },
-      outputData: { error: 'Connection timeout', code: 504 },
-      errorLogs: ['Error: Connection timeout after 30s'],
-      timestamp: new Date('2024-01-15T11:00:00'),
-    },
-  ];
+  const getAvailableTickets = (): ProductionTicket[] => {
+    const tickets: ProductionTicket[] = [];
+    
+    // 从localStorage加载选中的单据
+    const selectedTicketData = localStorage.getItem('selectedTicket');
+    if (selectedTicketData) {
+      try {
+        const ticket = JSON.parse(selectedTicketData);
+        // 确保timestamp是Date对象
+        if (ticket.timestamp && typeof ticket.timestamp === 'string') {
+          ticket.timestamp = new Date(ticket.timestamp);
+        }
+        tickets.push(ticket);
+      } catch (error) {
+        console.error('Failed to parse selected ticket:', error);
+      }
+    }
+    
+    // 添加模拟单据
+    const mockTickets: ProductionTicket[] = [
+      {
+        id: '1',
+        title: '用户登录失败问题',
+        description: '用户在登录时遇到认证失败，返回500错误',
+        severity: 'high',
+        status: 'draft',
+        inputData: { username: 'test@example.com', password: '***' },
+        outputData: { error: 'Authentication failed', code: 500 },
+        errorLogs: ['Error: Invalid credentials', 'Stack trace: ...'],
+        timestamp: new Date('2024-01-15T10:30:00'),
+      },
+      {
+        id: '2',
+        title: '数据库连接超时',
+        description: '应用程序无法连接到数据库，出现超时错误',
+        severity: 'critical',
+        status: 'draft',
+        inputData: { query: 'SELECT * FROM users' },
+        outputData: { error: 'Connection timeout', code: 504 },
+        errorLogs: ['Error: Connection timeout after 30s'],
+        timestamp: new Date('2024-01-15T11:00:00'),
+      },
+    ];
+    
+    // 添加模拟单据，但避免重复
+    mockTickets.forEach(mockTicket => {
+      if (!tickets.find(t => t.id === mockTicket.id)) {
+        tickets.push(mockTicket);
+      }
+    });
+    
+    return tickets;
+  };
 
-  const mockProjects: CodeProject[] = [
-    {
-      id: '1',
-      name: 'user-auth-service',
-      source: 'upload',
-      uploadTime: new Date('2024-01-15T09:00:00'),
-      files: [],
-      structure: { type: 'directory', name: 'root', children: [] },
-      totalSize: 1024000,
-      languages: ['TypeScript', 'JavaScript'],
-    },
-    {
-      id: '2',
-      name: 'database-service',
-      source: 'git',
-      gitUrl: 'https://github.com/example/db-service',
-      uploadTime: new Date('2024-01-15T09:30:00'),
-      files: [],
-      structure: { type: 'directory', name: 'root', children: [] },
-      totalSize: 2048000,
-      languages: ['Python', 'SQL'],
-    },
-  ];
+  const mockTickets = getAvailableTickets();
+
+  // 获取所有可用项目（包括从localStorage加载的项目）
+  const getAvailableProjects = (): CodeProject[] => {
+    const projects: CodeProject[] = [];
+    
+    // 从localStorage加载已上传的项目
+    const uploadedProjects = JSON.parse(localStorage.getItem('uploadedProjects') || '[]');
+    projects.push(...uploadedProjects);
+    
+    // 添加模拟项目
+    const mockProjects: CodeProject[] = [
+      {
+        id: 'mock-1',
+        name: 'user-auth-service',
+        source: 'upload',
+        uploadTime: new Date('2024-01-15T09:00:00'),
+        files: [],
+        structure: { type: 'directory', name: 'root', children: [] },
+        totalSize: 1024000,
+        languages: ['TypeScript', 'JavaScript'],
+      },
+      {
+        id: 'mock-2',
+        name: 'database-service',
+        source: 'git',
+        gitUrl: 'https://github.com/example/db-service',
+        uploadTime: new Date('2024-01-15T09:30:00'),
+        files: [],
+        structure: { type: 'directory', name: 'root', children: [] },
+        totalSize: 2048000,
+        languages: ['Python', 'SQL'],
+      },
+    ];
+    
+    projects.push(...mockProjects);
+    
+    // 如果有当前项目，确保它在列表中
+    if (selectedProject && !projects.find(p => p.id === selectedProject.id)) {
+      projects.unshift(selectedProject);
+    }
+    
+    return projects;
+  };
 
   const mockDiagnosisResult: DiagnosisResultType = {
     possibleCauses: [
@@ -304,7 +396,7 @@ const config = {
                       </div>
                       <p className="card-description">{ticket.description}</p>
                       <div className="card-meta">
-                        <span>创建时间: {ticket.timestamp.toLocaleDateString('zh-CN')}</span>
+                        <span>创建时间: {formatDate(ticket.timestamp)}</span>
                       </div>
                     </div>
                   ))}
@@ -314,7 +406,7 @@ const config = {
               <div className="selection-section">
                 <h3 className="selection-title">选择相关项目</h3>
                 <div className="selection-grid">
-                  {mockProjects.map((project) => (
+                  {getAvailableProjects().map((project) => (
                     <div
                       key={project.id}
                       className={`selection-card ${selectedProject?.id === project.id ? 'selected' : ''}`}
@@ -328,9 +420,10 @@ const config = {
                       </div>
                       <p className="card-description">
                         {project.languages.join(', ')} • {(project.totalSize / 1024 / 1024).toFixed(2)} MB
+                        {project.files && project.files.length > 0 && ` • ${project.files.length} 文件`}
                       </p>
                       <div className="card-meta">
-                        <span>上传时间: {project.uploadTime.toLocaleDateString('zh-CN')}</span>
+                        <span>上传时间: {formatDate(project.uploadTime)}</span>
                       </div>
                     </div>
                   ))}

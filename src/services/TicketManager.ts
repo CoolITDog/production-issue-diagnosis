@@ -118,13 +118,14 @@ export class TicketManager implements ITicketManager {
       errors.push('Valid status is required (draft, analyzing, completed)');
     }
 
-    // Input/Output data validation - allow empty strings and arrays, but not null/undefined
-    if (ticket.inputData === undefined || ticket.inputData === null) {
-      errors.push('Input data is required');
+    // Input/Output data validation - allow empty strings, arrays, objects, and null
+    // Don't require specific format, just ensure they're not undefined
+    if (ticket.inputData === undefined) {
+      errors.push('Input data is required (can be empty string, object, or null)');
     }
 
-    if (ticket.outputData === undefined || ticket.outputData === null) {
-      errors.push('Output data is required');
+    if (ticket.outputData === undefined) {
+      errors.push('Output data is required (can be empty string, object, or null)');
     }
 
     // Timestamp validation

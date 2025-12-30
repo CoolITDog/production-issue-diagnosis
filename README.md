@@ -17,7 +17,6 @@
 - **状态管理**: Redux Toolkit
 - **路由**: React Router v6
 - **样式**: CSS3 + 响应式设计
-- **测试**: Jest + React Testing Library
 - **代码规范**: ESLint + Prettier
 - **构建工具**: Create React App
 
@@ -30,18 +29,15 @@
 
 ### 安装依赖
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ### 开发命令
 
-\`\`\`bash
+```bash
 # 启动开发服务器
 npm start
-
-# 运行测试
-npm test
 
 # 构建生产版本
 npm run build
@@ -54,13 +50,14 @@ npm run format
 
 # 检查代码格式
 npm run format:check
-\`\`\`
+```
 
 ## 项目结构
 
-\`\`\`
+```
 src/
 ├── components/          # React组件
+├── contexts/           # React上下文
 ├── hooks/              # 自定义Hooks
 ├── pages/              # 页面组件
 ├── services/           # 业务逻辑服务
@@ -69,7 +66,7 @@ src/
 ├── utils/              # 工具函数
 ├── App.tsx             # 主应用组件
 └── index.tsx           # 应用入口
-\`\`\`
+```
 
 ## 开发规范
 
@@ -86,36 +83,30 @@ src/
 - ESLint代码检查
 - Prettier代码格式化
 
-### 测试规范
-
-- 为所有组件编写单元测试
-- 使用React Testing Library进行组件测试
-- 保持测试覆盖率
-
 ## 部署
 
 ### 构建生产版本
 
-\`\`\`bash
+```bash
 npm run build
-\`\`\`
+```
 
-构建完成后，\`build\` 目录包含了可部署的静态文件。
+构建完成后，`build` 目录包含了可部署的静态文件。
 
 ### 部署到静态服务器
 
-\`\`\`bash
+```bash
 # 使用serve进行本地预览
 npm install -g serve
 serve -s build
-\`\`\`
+```
 
 ## 贡献指南
 
 1. Fork 项目
-2. 创建功能分支 (\`git checkout -b feature/AmazingFeature\`)
-3. 提交更改 (\`git commit -m 'Add some AmazingFeature'\`)
-4. 推送到分支 (\`git push origin feature/AmazingFeature\`)
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 创建 Pull Request
 
 ## 许可证

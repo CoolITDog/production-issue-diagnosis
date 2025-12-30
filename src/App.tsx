@@ -10,6 +10,7 @@ import { ErrorNotifications } from './components/ErrorNotifications';
 import { GlobalLoadingOverlay } from './components/GlobalLoadingOverlay';
 import { ProgressPanel } from './components/ProgressPanel';
 import { PerformanceMonitor } from './components/PerformanceMonitor';
+import { DebugPanel } from './components/DebugPanel';
 import './App.css';
 import './components/ErrorBoundary.css';
 
@@ -38,6 +39,7 @@ function App() {
                   isVisible={showPerformanceMonitor}
                   onToggle={setShowPerformanceMonitor}
                 />
+                {process.env.NODE_ENV === 'development' && <DebugPanel />}
               </div>
             </Router>
           </ErrorBoundary>

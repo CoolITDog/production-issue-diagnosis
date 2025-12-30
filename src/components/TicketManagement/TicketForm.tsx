@@ -27,6 +27,10 @@ export const TicketForm: React.FC<TicketFormProps> = ({
   const [templates, setTemplates] = useState<TicketTemplate[]>([]);
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [jsonErrors, setJsonErrors] = useState({
+    inputData: '',
+    outputData: '',
+  });
 
   const templateManager = new TicketTemplateManager();
 
@@ -50,6 +54,28 @@ export const TicketForm: React.FC<TicketFormProps> = ({
       ...prev,
       [name]: value,
     }));
+
+    // Validate JSON fields in real-time
+    if (name === 'inputData' || name === 'outputData') {
+      validateJsonField(name as 'inputData' | 'outputData', value);
+    }
+  };
+
+  const validateJsonField = (fieldName: 'inputData' | 'outputData', value: string) => {
+    if (!value.trim()) {
+      setJsonErrors(prev => ({ ...prev, [fieldName]: '' }));
+      return;
+    }
+
+    try {
+      JSON.parse(value);
+      setJsonErrors(prev => ({ ...prev, [fieldName]: '' }));
+    } catch (error) {
+      setJsonErrors(prev => ({ 
+        ...prev, 
+        [fieldName]: '无效的JSON格式 (将作为文本保存)' 
+      }));
+    }
   };
 
   const handleTemplateSelect = async (templateId: string) => {
@@ -80,17 +106,34 @@ export const TicketForm: React.FC<TicketFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const ticketData = {
-      title: formData.title.trim(),
-      description: formData.description.trim(),
-      severity: formData.severity,
-      status: formData.status,
-      inputData: formData.inputData.trim() ? JSON.parse(formData.inputData) : null,
-      outputData: formData.outputData.trim() ? JSON.parse(formData.outputData) : null,
-      errorLogs: formData.errorLogs.trim() ? formData.errorLogs.split('\n').filter(log => log.trim()) : [],
-    };
+    try {
+      // Helper function to safely parse JSON
+      const safeJsonParse = (jsonString: string) => {
+        if (!jsonString.trim()) return null;
+        try {
+          return JSON.parse(jsonString);
+        } catch (error) {
+          // If JSON parsing fails, return the string as-is
+          return jsonString;
+        }
+      };
 
-    onSave(ticketData);
+      const ticketData = {
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        severity: formData.severity,
+        status: formData.status,
+        inputData: safeJsonParse(formData.inputData),
+        outputData: safeJsonParse(formData.outputData),
+        errorLogs: formData.errorLogs.trim() ? formData.errorLogs.split('\n').filter(log => log.trim()) : [],
+      };
+
+      onSave(ticketData);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // TODO: Show error notification to user
+      alert('提交表单时出错，请检查输入数据格式');
+    }
   };
 
   const isFormValid = formData.title.trim() && formData.description.trim();
@@ -217,12 +260,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({
               name="inputData"
               value={formData.inputData}
               onChange={handleInputChange}
-              className="form-textarea code-textarea"
+              className={`form-textarea code-textarea ${jsonErrors.inputData ? 'error' : ''}`}
               rows={6}
               placeholder='请输入JSON格式的输入数据，例如：{"userId": 123, "action": "login"}'
             />
-            <div className="form-hint">
-              请输入有效的JSON格式数据
+            <div className={`form-hint ${jsonErrors.inputData ? 'error' : ''}`}>
+              {jsonErrors.inputData || '请输入有效的JSON格式数据（可选）'}
             </div>
           </div>
 
@@ -235,12 +278,12 @@ export const TicketForm: React.FC<TicketFormProps> = ({
               name="outputData"
               value={formData.outputData}
               onChange={handleInputChange}
-              className="form-textarea code-textarea"
+              className={`form-textarea code-textarea ${jsonErrors.outputData ? 'error' : ''}`}
               rows={6}
               placeholder='请输入JSON格式的输出数据，例如：{"status": "error", "message": "Invalid credentials"}'
             />
-            <div className="form-hint">
-              请输入有效的JSON格式数据
+            <div className={`form-hint ${jsonErrors.outputData ? 'error' : ''}`}>
+              {jsonErrors.outputData || '请输入有效的JSON格式数据（可选）'}
             </div>
           </div>
 
